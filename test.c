@@ -48,7 +48,7 @@ void ARG_HANDLER(,) {
 int main(int argc, char** argv) {
 
   if (!cargs_parse_args(argc, argv)) {
-
+    return 0;
   }
 
   return 1;
