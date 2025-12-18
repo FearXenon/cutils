@@ -18,4 +18,4 @@ clean:
 $(TARGET): $(OBJS)
 	gcc -o $@ $^
 %.o: %.c
-	gcc -g -ggdb -c -o $@ $< -I./src
+	gcc -g -ggdb -c -o $@ $< -I./src -lpthread

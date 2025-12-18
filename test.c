@@ -1,5 +1,13 @@
 #include "stdio.h"
+#include "cargs.h"
+#include "cthread.h"
+#include <pthread.h>
+#include <stdlib.h>
+#include <unistd.h>
 
+#define TEST_CTHREAD
+
+#ifdef TEST_CARGS
 #define ARGS \
   START_FN(test,,) \
     START_FN(test1,,) \
@@ -44,12 +52,50 @@ void ARG_HANDLER(test,) {
 void ARG_HANDLER(,) {
   printf("default callback");
 }
+#endif // TEST_CARGS
+
+#ifdef TEST_CTHREAD
+
+thread_fn_t thread_fn(int* arg) {
+  printf("thread started, %d\n", *arg);
+  fflush(stdout);
+}
+
+#endif // TEST_CTHREAD
 
 int main(int argc, char** argv) {
 
+#ifdef TEST_CARGS
   if (!cargs_parse_args(argc, argv)) {
     return 0;
   }
+#endif // TEST_CARGS
+
+#ifdef TEST_CTHREAD
+
+  thread_pool_t *pool = thread_pool_create(16); 
+  thread_pool_resize(pool, 32);
+
+  int a = 42;
+  thread_t t = {
+    .fn = (thread_fn_t)thread_fn,
+    .arg = &a,
+    .pool = pool
+  };
+  if (thread_start(&t) != 0) {
+    exit(1);
+  }
+  
+  if (thread_start_attr(&t, (thread_attr_t){
+    .stacksize = 8 * 1024 * 1024,
+    .guardsize = 4 * 1024
+  }) != 0) {
+
+  }
+  
+#endif // TEST_CTHREAD
+       
+  sleep(1);
 
   return 1;
 }
