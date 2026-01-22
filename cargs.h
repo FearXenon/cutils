@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include "cstring.h"
 
 #define CONCAT(a, b) a##b
 #define CONCAT2(a, b) CONCAT(a, b)
@@ -41,16 +42,6 @@ static inline char str_to_double(const char* s, double* d) {
   return 1;
 }
 
-static inline int str_len(const char* s) {
-  int len = 0;
-  while (*s) {
-    s++;
-    len++;
-  }
-
-  return len;
-}
-
 static inline char is_opt(const char* s) {
   if (s[0] == '-') {
     if (s[1] == '\0' || (s[1] != '\0' && s[1] >= '0' && s[1] <= '9')) {
@@ -83,16 +74,6 @@ static inline char str_starts(const char *s, const char *search) {
     search++;
   }
   return *search == '\0';
-}
-
-static inline char str_equals(const char *s, const char *search) {
-  while (*s && *search) {
-    if (*s != *search)
-      return 0;
-    s++;
-    search++;
-  }
-  return *s == '\0';
 }
 
 struct args {

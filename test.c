@@ -1,11 +1,11 @@
 #include "stdio.h"
 #include "cargs.h"
+#define CSTRING_IMPLEMENTATION
+#include "cstring.h"
 #include "cthread.h"
 #include <pthread.h>
 #include <stdlib.h>
 #include <unistd.h>
-
-#define TEST_CTHREAD
 
 #ifdef TEST_CARGS
 #define ARGS \
